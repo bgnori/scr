@@ -47,6 +47,70 @@ import re
 SEPERATOR = '''--------------------------------------------------------------------------------'''
 
 
+class AsciiN:
+    """
+    >>> p = AsciiN('A1')
+    >>> p.parse('H')
+    'H'
+    >>> p = AsciiN('A11')
+    >>> p.parse('00 00 00.22')
+    '00 00 00.22'
+    """
+    def __init__(self, pattern):
+        assert pattern[0] == 'A'
+        self.len = int(pattern[1:])
+
+    def parse(self, input):
+        r = []
+        for i in xrange(self.len):
+            r.append(input[i])
+        return ''.join(r)
+
+class IntegerN:
+    """
+    >>> p = IntegerN('I1')
+    >>> p.parse('1')
+    1
+    >>> p = IntegerN('I6')
+    >>> p.parse('124700')
+    124700
+    >>> p = IntegerN('I6')
+    >>> p.parse('     1')
+    1
+    """
+    def __init__(self, pattern):
+        assert pattern[0] == 'I'
+        self.len = int(pattern[1:])
+
+    def parse(self, input):
+        r = []
+        for i in xrange(self.len):
+            r.append(input[i])
+        return int(''.join(r))
+
+
+class FloatMN:
+    """
+    >>> p = FloatMN('F5.2')
+    >>> p.parse(' 9.10')
+    9.10
+    >>> p = FloatMN('F12.8')
+    >>> p.parse('+01.08901332')
+    1.08901332
+    """
+    def __init__(self, pattern):
+        assert pattern[0] == 'F'
+        p = pattern[1:].split('.')
+        self.len = int(p[0])
+        self.flen = int(p[1])
+
+    def parse(self, input):
+        r = []
+        for i in xrange(self.len):
+            r.append(input[i])
+        return float(''.join(r))
+
+
 class Property:
     """
     >>> line = "       1  A1    ---     Catalog   [H] Catalogue (H=Hipparcos)               (H0)"
@@ -56,11 +120,12 @@ class Property:
     >>> p["Label"]
     'Catalog'
     """
+
+    #FXME: these tuples are just for hip_main.dat
     template = dict(Bytes=(0,9), Format=(9,15), Units=(15,22), Label=(22,32), Explanations=(32, len(SEPERATOR)))
 
     def __init__(self, line):
         self.d = dict([(k, line[:v[1]][v[0]:].strip())for k, v in self.template.items()])
-        #self.d = dict([(k,v) for k, v in self.template.items()])
 
     def __getitem__(self, key):
         return self.d[key]
@@ -96,7 +161,8 @@ class Parser:
      The 'T' flag implies either an inconsistency between the Hipparcos
      and Tycho catalogues, or a deficiency in one or both of the 
      catalogues."""
-        self.properties = [{}, {}, {"Note":note}, {"Label":"RAhms", "Explanations":'Right ascension in h m s, ICRS (J1991.25) (H3)'}]
+        #self.properties = [{}, {}, {"Note":note}, {"Label":"RAhms", "Explanations":'Right ascension in h m s, ICRS (J1991.25) (H3)'}]
+        self.properties[2].d['Note'] = note
 
     def __getitem__(self, key):
         assert isinstance(key, int)
