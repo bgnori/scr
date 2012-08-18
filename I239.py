@@ -92,11 +92,11 @@ class IntegerN:
 class FloatMN:
     """
     >>> p = FloatMN('F5.2')
-    >>> p.parse(' 9.10')
-    9.10
+    >>> p.parse(' 9.10') - 9.10
+    0.0
     >>> p = FloatMN('F12.8')
-    >>> p.parse('+01.08901332')
-    1.08901332
+    >>> round(p.parse('+01.08901332'), 7)
+    1.0890133
     """
     def __init__(self, pattern):
         assert pattern[0] == 'F'
