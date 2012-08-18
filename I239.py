@@ -42,13 +42,50 @@ this flag provides a coarse indication of the presence
 '''
 
 
+import re
+
+SEPERATOR = '''--------------------------------------------------------------------------------'''
+
+
+class Property:
+    """
+    >>> line = "       1  A1    ---     Catalog   [H] Catalogue (H=Hipparcos)               (H0)"
+    >>> p = Property(line)
+    >>> p["Format"]
+    'A1'
+    >>> p["Label"]
+    'Catalog'
+    """
+    template = dict(Bytes=(0,9), Format=(9,15), Units=(15,22), Label=(22,32), Explanations=(32, len(SEPERATOR)))
+
+    def __init__(self, line):
+        self.d = dict([(k, line[:v[1]][v[0]:].strip())for k, v in self.template.items()])
+        #self.d = dict([(k,v) for k, v in self.template.items()])
+
+    def __getitem__(self, key):
+        return self.d[key]
+
 
 class Parser:
     def __init__(self, description):
         xs = description.splitlines()
         self.name = xs[0][len("Byte-by-byte Description of file: "):]
-        xs[1]
-        '''   Bytes Format Units   Label     Explanations'''
+        assert xs[1] == SEPERATOR
+        assert xs[2] == '''   Bytes Format Units   Label     Explanations'''
+        assert xs[3] == SEPERATOR
+        n = 4
+        self.properties = []
+        while xs[n] != SEPERATOR:
+            self.properties.append(Property(xs[n]))
+            n += 1
+
+        assert xs[n] == SEPERATOR
+        n += 1
+        self.notes = []
+        while xs[n] != SEPERATOR:
+            self.notes.append(Property(xs[n]))
+            n += 1
+
         note = """this flag provides a coarse indication of the presence
      of nearby objects within 10arcsec of the given entry.
      If non-blank, it indicates that 
