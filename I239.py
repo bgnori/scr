@@ -61,10 +61,7 @@ class AsciiN:
         self.len = int(pattern[1:])
 
     def parse(self, input):
-        r = []
-        for i in xrange(self.len):
-            r.append(input[i])
-        return ''.join(r)
+        return input[:self.len]
 
 class IntegerN:
     """
@@ -83,10 +80,11 @@ class IntegerN:
         self.len = int(pattern[1:])
 
     def parse(self, input):
-        r = []
-        for i in xrange(self.len):
-            r.append(input[i])
-        return int(''.join(r))
+        r = input[:self.len].strip()
+        assert r
+        for c in r:
+            assert c in '-+0123456789'
+        return int(r)
 
 
 class FloatMN:
@@ -105,10 +103,31 @@ class FloatMN:
         self.flen = int(p[1])
 
     def parse(self, input):
-        r = []
-        for i in xrange(self.len):
-            r.append(input[i])
-        return float(''.join(r))
+        r = input[:self.len].strip()
+        assert r
+        for c in r:
+            assert c in '-+.0123456789'
+        return float(r)
+
+
+def get_parser(pattern):
+    if pattern[0]=='A':
+        return AsciiN(pattern)
+    elif pattern[0] == 'I':
+        return IntegerN(pattern)
+    elif pattern[0] == 'F':
+        return FloatMN(pattern)
+    else:
+        assert False
+
+
+def get_range(s):
+    if '-' in s:
+        b, e = s.split('-')
+        return (int(b) - 1, int(e))
+    else:
+        b = int(s) -1
+        return (b, b+1)
 
 
 class Property:
@@ -169,7 +188,16 @@ class Parser:
         return self.properties[key]
 
     def parse(self, line):
-        return dict(HIP=1,RAhms = '00 00 00.22',DEdms = '+01 05 20.4')
+        d = {}
+        for p in self.properties:
+            r = get_range(p["Bytes"])
+            v = line[r[0]:r[1]].strip()
+            if v:
+                d[p["Label"]]=get_parser(p["Format"]).parse(v)
+            else:
+                d[p["Label"]]=None
+
+        return d 
 
 
 def ParserBuilder(description):
@@ -179,5 +207,4 @@ def ParserBuilder(description):
 if __name__ == "__main__":
     import doctest
     doctest.testmod()
-
 
