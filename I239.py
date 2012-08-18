@@ -149,6 +149,26 @@ class Property:
     def __getitem__(self, key):
         return self.d[key]
 
+    def __setitem__(self, key, value):
+        self.d[key] = value
+
+
+def read_note(notes, actives, line):
+    if line[:5] == '     ':
+        for a in actives:
+            notes[a] += ( "\n" + line)
+        return actives
+    elif line.startswith("Note on "):
+        labels, sep, rest = line[len("Note on "):].partition(":")
+        xs = [ label.strip() for label in labels.split(',')]
+        for x in xs:
+            notes[x] = rest
+        return xs
+    else:
+        # Maybe ---- , and it is end of Data
+        return None
+
+
 
 class Parser:
     def __init__(self, description):
@@ -165,23 +185,14 @@ class Parser:
 
         assert xs[n] == SEPERATOR
         n += 1
-        self.notes = []
+        notes = {}
+        active = None
         while xs[n] != SEPERATOR:
-            self.notes.append(Property(xs[n]))
+            active = read_note(notes, active, xs[n])
             n += 1
 
-        note = """this flag provides a coarse indication of the presence
-     of nearby objects within 10arcsec of the given entry.
-     If non-blank, it indicates that 
-     'H' there is one or more distinct Hipparcos Catalogue entries, 
-         or distinct components of system from h_dm_com.dat
-     'T' there is one or more distinct Tycho entries
-     If 'H' and 'T' apply, 'H' is adopted.
-     The 'T' flag implies either an inconsistency between the Hipparcos
-     and Tycho catalogues, or a deficiency in one or both of the 
-     catalogues."""
-        #self.properties = [{}, {}, {"Note":note}, {"Label":"RAhms", "Explanations":'Right ascension in h m s, ICRS (J1991.25) (H3)'}]
-        self.properties[2].d['Note'] = note
+        for p in self.properties:
+            p["Note"] = notes.get(p["Label"], None)
 
     def __getitem__(self, key):
         assert isinstance(key, int)
