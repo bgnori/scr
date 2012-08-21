@@ -39,6 +39,12 @@ http://www.astroarts.co.jp/alacarte/kiso/index-j.shtml
 
 
 
+Civil twilight uses the value –6 degrees.
+Nautical twilight uses the value –12 degrees.
+Astronomical twilight uses the value –18 degrees.
+
+
+
 ユリウス日（Julian Day:JD）は、世界時の-4712年（BC4713年）1月1日12時を0とした通日の値です。
 ユリウス日の1日は世界時の正午に始まります。そして時刻は日の小数として表されます。
 
@@ -47,6 +53,7 @@ http://www.astroarts.co.jp/alacarte/kiso/index-j.shtml
 
 
 地平座標
+(Apparent Topocentric Position)
 
 Azimuth (方向A) 南を起点(0度)に西回りに360度
 Altitude (高さh) 水平線を基点に天頂が+90度, 天底が-90度
@@ -57,7 +64,7 @@ http://ja.wikipedia.org/wiki/%E5%A4%A9%E7%90%83%E5%BA%A7%E6%A8%99%E7%B3%BB
 赤道座標系との返還式
 
 
-赤道座標
+赤道座標(Equatorial)
 
 α、right ascension, RA(赤経)/H時角, 
  度 (degree) ではなく時 (hour) を単位として表す
@@ -73,7 +80,7 @@ http://ja.wikipedia.org/wiki/%E5%A4%A9%E7%90%83%E5%BA%A7%E6%A8%99%E7%B3%BB
 2005年現在、元期には通常 J2000.0 が用いられる。古い観測値では B1950.0 が使われている場合もある。
 
 
-黄道座標
+黄道座標(Ecliptic)
 
 黄経（こうけい:λ）
   春分点起点、東回り up to 360度
@@ -187,6 +194,130 @@ with open('hip_main') as f
         print entry.HIP, entry.RAhms, entry.DEdms
 
 とかできるようにしたい。
+
+
+
+
+---
+
+test = ephem.FixedBody(epoch=ephem.J2000, g_dec=0, g_ra=0)
+
+tokyo = ephem.Observer()
+tokyo.lat = 35.0
+tokyo.lon = 139.0
+tokyo.elevation = 40
+
+test.compute(tokyo)
+
+
+とかすればよさげ。
+しかし年周視差のある天体はどうなるのだろう？
+
+http://oneau.wordpress.com/2010/07/04/astrometry-in-python-with-pyephem/#bodies-from-database
+とかからがんばるか？
+
+hipにはPlxという形で入っている。視差の方向も必要だが・・・
+
+
+XEphemのマニュアル(5.1 Sky View mouse)にはこうある・・・無限遠扱いなのか？！ 
+ The coordinates are derived directly from the screen location and know
+ nothing of the displayed objects. Thus, they neglect parallax (i.e., assume
+ everything is at infinity).
+
+
+from http://ja.wikipedia.org/wiki/%E5%B9%B4%E5%91%A8%E8%A6%96%E5%B7%AE
+
+地動説に基づいて古くからその存在が仮定されていたが、年周視差の大きさは非常に
+小さいためにその観測は非常に困難であった。もっとも地球に近い恒星である
+ケンタウルス座α星でも年周視差はわずか0.76秒である。これは271m先にある物体を
+1mmずらしたときに発生する視差を検出することに等しい
+
+うーむ、計算してないのはこの辺か。
+
+
+HipparcosのデータがJ2000なのか確認 J1991.25かも？ -> Ephemではどうなるのか？
+     expressed in degrees for epoch J1991.25 (JD2448349.0625 (TT)) in the
+
+Note on RAdeg, DEdeg: right ascension and declination are
+     expressed in degrees for epoch J1991.25 (JD2448349.0625 (TT)) in the
+     ICRS (International Celestial Reference System, consistent with
+     J2000) reference system.
+     There are 263 cases where these fields are missing (no astrometric
+     solution could be found)
+
+ロードして計算できるようにする。
+名前をHipparcosのnumbringで。
+
+
+FixedBodyの引数にパラメータを渡しても無視されるので、
+    s = ephem.FixedBody()
+    s._epoch=JD1991_25
+    s._ra=c["RAdeg"]
+    s._dec=c["DEdeg"]#, Name="HIP=%i"%(c["HIP"]))
+とかする。
+
+
+http://en.wikipedia.org/wiki/List_of_stars_in_the_Hipparcos_Catalogue
+とか確認に使う
+
+
+
+     
+EphemのDateは Dublin JD。
+
+http://en.wikipedia.org/wiki/Julian_day
+
+         The Dublin Julian Date (DJD) is the number of days that has elapsed
+         since the epoch of the solar and lunar ephemerides used from 1900
+         through 1983, Newcomb's Tables of the Sun and Ernest W. Brown's
+         Tables of the Motion of the Moon (1919). This epoch was noon UT on
+         January 0, 1900, which is the same as noon UT on December 31, 1899.
+         The DJD was defined by the International Astronomical Union at their
+         1955 meeting in Dublin, Ireland.[7]
+
+
+
+Polaris is HIP 11767... got  HIP=11767
+ra should be 2h31m49.09s, dec should be +89 15.50'50.8"
+ra=20:20:29.81, dec=43:12:07.9
+az=140:02:25.0, alt=12:17:54.7
+
+
+http://www.stargazing.net/kepler/altaz.html
+Converting RA and DEC to ALT and AZ
+
+EOD (Equinox of Date)
+
+
+in __init__.py of ephem
+
+# We make available several basic types from _libastro.
+
+Angle = _libastro.Angle
+degrees = _libastro.degrees
+hours = _libastro.hours
+
+
+in astro.h
+#define	raddeg(x)	((x)*180./PI)
+
+in _libastro.c
+
+static PyObject* build_degrees(double radians)
+{
+     return new_Angle(radians, raddeg(1));
+}
+
+static PyObject* new_Angle(double radians, double factor)
+{
+     AngleObject *ea;
+     ea = PyObject_NEW(AngleObject, &AngleType);
+     if (ea) {
+	  ea->f.ob_fval = radians;
+	  ea->factor = factor;
+     }
+     return (PyObject*) ea;
+}
 
 
 
