@@ -279,8 +279,32 @@ http://en.wikipedia.org/wiki/Julian_day
 
 Polaris is HIP 11767... got  HIP=11767
 ra should be 2h31m49.09s, dec should be +89 15.50'50.8"
-ra=20:20:29.81, dec=43:12:07.9
-az=140:02:25.0, alt=12:17:54.7
+ from Wikipedia, J2000
+
+http://www.alcyone.de/SIT/mainstars/SIT000816.htm
+ data from The Bright Star Catalogue, 5th Revised Ed. (Preliminary Version) (Hoffleit+, 1991)
+  J2000 1h31min48.7sec +89-15'51"
+  J1900 1h22min33.7sec +88-46'26"
+
+ data from SKY2000 - Master Star Catalog (Myers+ 1997)
+  J2000 2h31min48.704sec +89-15'50'72"
+
+ data from Smithsonian Astrophysical Observatory Star Catalog (SAO Staff 1966; USNO, ADC 1990)
+  J1950 1h48min48.786sec +89-1'43.74"
+  J2000 2h31min48.711sec +89-15'50.64"
+
+
+http://simbad.u-strasbg.fr/simbad/sim-id?Ident=Polaris
+ 
+
+
+Polarisの各種星表(star catalogue)
+でのID
+ 12H UMi, 2B UMi, 1H' UMi,
+ HR 424, HD 8890,
+ BD+88°8,
+ HIP 11767, SAO 308,
+ GC 2243, BAC 360, FK5 907, ADS 1477, CCDM 02319+8915.
 
 
 http://www.stargazing.net/kepler/altaz.html
@@ -319,5 +343,20 @@ static PyObject* new_Angle(double radians, double factor)
      return (PyObject*) ea;
 }
 
+
+sqliteでmemoryにロードするようにする？
+http://www.sqlite.org/inmemorydb.html
+
+diskへのbackup機能
+http://www.sqlite.org/c3ref/backup_finish.html#sqlite3backupinit
+これとmemoryとのコンボで一回ロードしたらbackupを使い続ける、とかか。
+
+pysqliteだとこれか？
+In [42]: conn.iterdump?
+Type:       builtin_function_or_method
+String Form:<built-in method iterdump of pysqlite2.dbapi2.Connection object at
+0x251cb10>
+Docstring:  Returns iterator to the dump of the database in an SQL text
+format. Non-standard.
 
 

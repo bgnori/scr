@@ -19,7 +19,7 @@ From Readme of I239
 'Right ascension in h m s, ICRS (J1991.25) (H3)'
 
 >>> print parser[2]["Note"]
-this flag provides a coarse indication of the presence
+ this flag provides a coarse indication of the presence
      of nearby objects within 10arcsec of the given entry.
      If non-blank, it indicates that 
      'H' there is one or more distinct Hipparcos Catalogue entries, 
@@ -39,6 +39,22 @@ this flag provides a coarse indication of the presence
 
 >>> entry["DEdms"]
 '+01 05 20.4'
+
+>>> tyc_Description = open("tyc_main.description").read()
+>>> tyc_line = """T|4628   237 1| |02 31 47.08|+89 15 50.9| 2.00| | |037.94616079|+89.26413807|X|   8.5 |   45.5 |  -14.3 |  1.2 |  1.4 |  1.4 |  1.4 |  1.7 |-0.22|+0.24|+0.05|-0.25|+0.23|-0.07|+0.20|-0.48|+0.09|-0.43|142| 0.12| 11767| 2.756|0.003| 2.067|0.003|M| 0.620|0.003| |1|12.5| |130|0.032| 2.04| 2.10|G|W|Y|A|  |   431|  8890|B+88    8 |          |          |L"""
+
+>>> tyc_parser = ParserBuilder(tyc_Description)
+>>> tyc_parser.name
+'tyc_main.dat'
+
+>>> tyc_parser[3]["Label"]
+'RAhms'
+
+>>> entry = tyc_parser.parse(tyc_line)
+>>> entry["TYC"]
+'4628   237 1'
+
+
 '''
 
 
@@ -154,7 +170,7 @@ class Property:
 
 
 def read_note(notes, actives, line):
-    if line[:5] == '     ':
+    if line[0] == ' ':
         for a in actives:
             notes[a] += ( "\n" + line)
         return actives

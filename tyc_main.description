@@ -1,0 +1,133 @@
+Byte-by-byte Description of file: tyc_main.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label     Explanations
+--------------------------------------------------------------------------------
+       1  A1    ---     Catalog   [T] Catalogue (T = Tycho)                 (T0)
+   3- 14  A12   ---     TYC      *TYC1-3 (TYC number)                       (T1)
+      16  A1    ---     Proxy     [HT]? Proximity flag                      (T2)
+  18- 28  A11   ---     RAhms     Right ascension in h m s, ICRS (J1991.25) (T3)
+  30- 40  A11   ---     DEdms     Declination in deg ' ", ICRS (J1991.25)   (T4)
+  42- 46  F5.2  mag     Vmag      ? Magnitude in Johnson V                  (T5)
+      48  A1    ---     ---       ? Blank for Tycho                         (T6)
+      50  A1    ---   r_Vmag     *[BDTV] Source of magnitude                (T7)
+  52- 63  F12.8 deg     RAdeg    *alpha, degrees (ICRS, Epoch=J1991.25)     (T8)
+  65- 76  F12.8 deg     DEdeg    *delta, degrees (ICRS, Epoch=J1991.25)     (T9)
+      78  A1    ---     AstroRef *[X]? Reference flag for astrometry       (T10)
+  80- 86  F7.2  mas     Plx      *? Trigonometric parallax                 (T11)
+  88- 95  F8.2 mas/yr   pmRA     *? Proper motion mu_alpha.cos(delta), ICRS(T12)
+  97-104  F8.2 mas/yr   pmDE     *? Proper motion mu_delta, ICRS           (T13)
+ 106-111  F6.2  mas   e_RAdeg    *? Standard error in RA*cos(delta)        (T14)
+ 113-118  F6.2  mas   e_DEdeg    *? Standard error in DE                   (T15)
+ 120-125  F6.2  mas   e_Plx      *? Standard error in Plx                  (T16)
+ 127-132  F6.2 mas/yr e_pmRA     *? Standard error in pmRA                 (T17)
+ 134-139  F6.2 mas/yr e_pmDE     *? Standard error in pmDE                 (T18)
+ 141-145  F5.2  ---     DE:RA     [-1/1]? Correlation, DE/RA*cos(delta)    (T19)
+ 147-151  F5.2  ---     Plx:RA    [-1/1]? Correlation, Plx/RA*cos(delta)   (T20)
+ 153-157  F5.2  ---     Plx:DE    [-1/1]? Correlation, Plx/DE              (T21)
+ 159-163  F5.2  ---     pmRA:RA   [-1/1]? Correlation, pmRA/RA*cos(delta)  (T22)
+ 165-169  F5.2  ---     pmRA:DE   [-1/1]? Correlation, pmRA/DE             (T23)
+ 171-175  F5.2  ---     pmRA:Plx  [-1/1]? Correlation, pmRA/Plx            (T24)
+ 177-181  F5.2  ---     pmDE:RA   [-1/1]? Correlation, pmDE/RA*cos(delta)  (T25)
+ 183-187  F5.2  ---     pmDE:DE   [-1/1]? Correlation, pmDE/DE             (T26)
+ 189-193  F5.2  ---     pmDE:Plx  [-1/1]? Correlation, pmDE/Plx            (T27)
+ 195-199  F5.2  ---     pmDE:pmRA [-1/1]? Correlation, pmDE/pmRA           (T28)
+ 201-203  I3    ---     Nastro    ? Number of transits for astrometry      (T29)
+ 205-209  F5.2  ---     F2       *? Goodness-of-fit parameter              (T30)
+ 211-216  I6    ---     HIP       ? Hipparcos HIP number                   (T31)
+ 218-223  F6.3  mag     BTmag     ? Mean BT magnitude                      (T32)
+ 225-229  F5.3  mag   e_BTmag     ? Standard error in BTmag                (T33)
+ 231-236  F6.3  mag     VTmag     ? Mean VT magnitude                      (T34)
+ 238-242  F5.3  mag   e_VTmag     ? Standard error in VTmag                (T35)
+     244  A1    ---   r_BTmag    *[DMNT] Source of photometry              (T36)
+ 246-251  F6.3  mag     B-V       ? Johnson B-V colour                     (T37)
+ 253-257  F5.3  mag   e_B-V       ? Standard error on B-V                  (T38)
+     259  A1    ---     ---       ? Blank for Tycho                        (T39)
+     261  I1    ---     Q        *? Astrometric quality flag, Q            (T40)
+ 263-266  F4.1  ---     Fs        ? Signal-to-noise ratio of the star image(T41)
+     268  A1    ---     Source   *[HPR] Source of astrometric data         (T42)
+ 270-272  I3    ---     Nphoto    ? Number of transits for photometry      (T43)
+ 274-278  F5.3  mag     VTscat    ? Estimate of VTmag scatter              (T44)
+ 280-284  F5.2  mag     VTmax     ? VTmag at maximum (15th percentile)     (T45)
+ 286-290  F5.2  mag     VTmin     ? VTmag at minimum (85th percentile)     (T46)
+     292  A1    ---     Var      *[GN]? Known variability from GCVS/NSV    (T47)
+     294  A1    ---     VarFlag  *[UVW]? Variability from Tycho            (T48)
+     296  A1    ---     MultFlag *[DRSYZ]? Duplicity from Tycho            (T49)
+     298  A1    ---     morePhoto [AB]  Epoch photometry in Annex A or B   (T50)
+ 300-301  A2    ---   m_HIP       CCDM component identifier                (T51)
+ 303-308  I6    ---     PPM      *[1/789676]? PPM and Supplement           (T52)
+ 310-315  I6    ---     HD        [1/359083]? HD cat. <III/135>            (T53)
+ 317-326  A10   ---     BD        Bonner DM <I/119>, <I/122>               (T54)
+ 328-337  A10   ---     CoD       Cordoba DM <I/114>                       (T55)
+ 339-348  A10   ---     CPD       Cape Photographic DM <I/108>             (T56)
+     350  A1    ---     Remark   *[JKLM] Notes                             (T57)
+--------------------------------------------------------------------------------
+Note on TYC: the designation of an object in the Tycho Catalogue uses the
+     Guide Star Catalog numbering system (a region number (TYC1) and a number
+     within the region (TYC2)) followed by a Tycho specific component number
+     (TYC3).
+Note on r_Vmag: if non blank, the field has the following meaning:
+     B : no VTmag available, therefore BTmag was adopted
+     D : derived from approximate BTmag and VTmag (r_BTmag field T36 is 'D')
+     T : derived from approximate VTmag (r_BTmag field T36 is 'T')
+     V : no BTmag available, therefore VTmag was adopted in Vmag
+Note on RAdeg, DEdeg: right ascension and declination are
+     expressed in degrees for epoch J1991.25 (JD2448349.0625 (TT)) in the
+      ICRS (International Celestial Reference System, close to
+     J2000) reference system.
+Note on AstroRef: 'X' indicates a dubious astrometric reference star
+     in the context of the Tycho catalogue.
+Note on Plx, pmRA, pmDE, e_RAdeg, e_DEdeg, e_Plx, e_pmRA, e_pmDE:
+     For these fields the second decimal digit is always blank
+Note on F2: values exceeding +2.5 to +3 indicate a bad fit to the data.
+Note on r_BTmag: the source flag has the following meaning:
+     D : approximate BTmag, VTmag obtained for resolved double stars
+     M : BTmag and VTmag are median values rather than de-censored means
+     N : BTmag and VTmag are de-censored means
+     T : BTmag is not given, and VTmag is an estimate; these magnitudes
+         are systematically too bright by up to 1mag.
+     A blank indicates an Hipparcos star not observed by Tycho (T42 = H).
+Note on Q: the astrometric quality flag is defined by the following table,
+     where sigma(max) is the largest of the 5 astrometric standard errors:
+   ---------------------------------------------------------
+     Q  sigma(max)   Astrometric quality
+   ---------------------------------------------------------
+     1     <   5     very high
+     2     5- 10     very high
+     3    10- 25     high
+     4    25- 50     high
+     5    50-150     medium
+     6     < 150     perhaps non-single
+     7     < 150     low
+     8     < 150     perhaps non-stellar
+     9     ~ 200     low, position derived from TICR
+                     ('R' in Source field T42)
+   blank     ---     unassigned, 'H' in Source field T42
+                     (Hipparcos star not observed by Tycho)
+   ---------------------------------------------------------
+Note on Source:
+     H : Hipparcos star not observed by Tycho
+     P : only the position was determined (no proper motion, no parallax)
+     R : the position is derived from TICR catalog <I/197>
+Note on Var: this flag is set when the variability is known:
+     G : variable known in General Catalog of Variable Stars <II/214>
+     N : variable known in New Suspected Variables catalog <II/140>
+Note on VarFlag: this flag has the following meaning:
+     U : apparent variability in the Tycho data; may be due to duplicity
+     V : strong evidence of intrinsic variability
+     W : suspected intrinsic variability
+Note on MultFlag: unresolved duplicity status from Tycho data analysis:
+     D : duplicity clearly indicated (BTmag and VTmag refer to combined light)
+     R : duplicity weakly indicated, combined with indication of variability
+     S : duplicity suspected
+     Y : investigation for duplicity carried out on Tycho data,
+         no indication of duplicity was found
+     Z : investigation for duplicity not carried out
+ blank : Hipparcos star not observed by Tycho
+Note on PPM: from the 3 parts of the PPM catalogue
+    North <I/146>, South <I/193>, and 90000Supplement <I/208>
+Note on Remark: if non-blank, the remark has the following meaning:
+     J : disagreement with position of magnitude in GSC1.1 catalog <I/220>
+     K : dubious Tycho parallax (Plx)
+     L : dubious Tycho proper motion (disagrees with PPM catalogue)
+     M : very uncertain Tycho magnitude (standard error larger than 0.3mag)
+--------------------------------------------------------------------------------
