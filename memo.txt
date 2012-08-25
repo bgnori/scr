@@ -360,3 +360,21 @@ Docstring:  Returns iterator to the dump of the database in an SQL text
 format. Non-standard.
 
 
+
+WCSTools libwcs/binread.cのbinread/binopen/binstar関数を参考に
+
+in binstar
+    /* Interpret catalog number */
+        switch (sc->stnum) {
+以下がbinary dataをfileから読み出している。
+
+
+SAOのバイナリをparseすることはgive up.
+headerの仕様に書いてあるentry長とentry長を指定するフィールドに書いてあるentry長が一致しない。
+
+
+
+
+
+
+
