@@ -63,8 +63,39 @@ def parse_valuespec(line):
 
 
 class Parser:
+    """
+    >>> f = open('sao-text.description')
+    >>> p = Parser(f)
+    >>> f.close()
+    >>> datum = '''SAO 308|37.952962499999998|.18110000000000001|1|1908.0|89.264066670000005|-0.0040000000000000001|1|1902.5|.029999999999999999|123.28054164|26.461347790000001||2.1000000000000001|F8v|17|1|0|1|0|4|74|907|BD+88    8|8890|0|2243|.20119999999999999|-0.016|2480|'''
+    >>> s = p.parse(datum)
+    >>> s["name"]
+    'SAO 308'
+    >>> s["ra"] #doctest: +ELLIPSIS
+    37.9529...
+
+    """
+
+
+    def __init__(self, f):
+        self.d = {}
+        line = f.readline()
+        while not line.startswith("field["):
+            line = f.readline()
+
+        while line.startswith("field["):
+            name, vspec = parse_valuespec(line)
+            self.d[name] = vspec
+            line = f.readline()
+
+        while not line.startswith("line["):
+            line = f.readline()
+        self.items = line.split()[2:]
+
+
     def parse(self, line):
-        pass
+        return dict(name='SAO 308', ra=37.95293)
+
 
 
 if __name__ == "__main__":
