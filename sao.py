@@ -1,3 +1,4 @@
+import sys
 import re
 
 class ValueSpec:
@@ -67,6 +68,9 @@ class Parser:
     >>> f = open('sao-text.description')
     >>> p = Parser(f)
     >>> f.close()
+    >>> p.items
+    ['name', 'ra', 'proper_motion_ra', 'proper_motion_ra_error', 'ra_epoch', 'dec', 'proper_motion_dec', 'proper_motion_dec_error', 'dec_epoch', 'position_error', 'lii', 'bii', 'pg_mag', 'vmag', 'spect_type', 'ref_vmag', 'ref_star_number', 'ref_pg_mag', 'ref_proper_motion', 'ref_spect_type', 'remarks', 'ref_source_cat', 'num_source_cat', 'dm', 'hd', 'hd_component', 'gc', 'proper_motion_ra_fk5', 'proper_motion_dec_fk5', 'class']
+
     >>> datum = '''SAO 308|37.952962499999998|.18110000000000001|1|1908.0|89.264066670000005|-0.0040000000000000001|1|1902.5|.029999999999999999|123.28054164|26.461347790000001||2.1000000000000001|F8v|17|1|0|1|0|4|74|907|BD+88    8|8890|0|2243|.20119999999999999|-0.016|2480|'''
     >>> s = p.parse(datum)
     >>> s["name"]
@@ -75,8 +79,6 @@ class Parser:
     37.9529...
 
     """
-
-
     def __init__(self, f):
         self.d = {}
         line = f.readline()
@@ -92,10 +94,21 @@ class Parser:
             line = f.readline()
         self.items = line.split()[2:]
 
-
     def parse(self, line):
-        return dict(name='SAO 308', ra=37.95293)
+        xs = line.split('|')
+        zs = zip(self.items, xs)
+        d = {}
 
+        for name, x in zs:
+            vspec = self.d[name]
+            #print name, x, vspec
+            if x:
+                v = vspec.parse(x)
+                d[name] = v
+            else:
+                print >>sys.stderr, name, 'is empty, in ', d['name']
+                d[name] = None
+        return d
 
 
 if __name__ == "__main__":
