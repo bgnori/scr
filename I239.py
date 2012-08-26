@@ -191,7 +191,8 @@ class Parser:
         xs = description.splitlines()
         self.name = xs[0][len("Byte-by-byte Description of file: "):]
         assert xs[1] == SEPERATOR
-        assert xs[2] == '''   Bytes Format Units   Label     Explanations'''
+        assert xs[2].split() == ["Bytes", "Format", "Units", "Label", "Explanations"]
+
         assert xs[3] == SEPERATOR
         n = 4
         self.properties = []
