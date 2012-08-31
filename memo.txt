@@ -400,3 +400,18 @@ Coordinates System である。ここでは、次の文献の概要を解説す�
 
 
 
+Henry Draper Catalogue
+http://en.wikipedia.org/wiki/Henry_Draper_Catalogue
+
+PolarisはHD 8890
+
+http://ja.wikipedia.org/wiki/%E3%83%98%E3%83%B3%E3%83%AA%E3%83%BC%E3%83%BB%E3%83%89%E3%83%AC%E3%82%A4%E3%83%91%E3%83%BC%E3%82%AB%E3%82%BF%E3%83%AD%E3%82%B0
+バイエル符号やフラムスティード番号のない星に対しては現在でもヘンリー・ドレイパー番号(HD)
+が広く使われている。1番から225,300番までの星は1900.0年元期の赤経に従って並べられている。
+225,301番から359,083番までの星は1949年に新たに付け加えられた。これらの星には通常HDE
+(Henry Draper catalogue Extension)
+という略号が付けられるが、曖昧でなければHDとだけ書かれることもある。
+
+
+
+

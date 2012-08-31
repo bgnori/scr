@@ -169,6 +169,8 @@ class Property:
         self.d[key] = value
 
 
+NOTE_BY_NUMER_PATTERN = r"Note \((?P<number>\d)\):"
+NOTE_BY_NUMER_RE = re.compile(NOTE_BY_NUMER_PATTERN)
 def read_note(notes, actives, line):
     if line[0] == ' ':
         for a in actives:
@@ -180,6 +182,13 @@ def read_note(notes, actives, line):
         for x in xs:
             notes[x] = rest
         return xs
+    elif NOTE_BY_NUMER_RE.match(line):
+        m = NOTE_BY_NUMER_RE.match(line)
+        n = int(m.groupdict()["number"])
+        labels, sep, rest = line[m.end():].partition(":")
+
+        notes[n] = rest
+        return [n]
     else:
         # Maybe ---- , and it is end of Data
         return None
@@ -210,6 +219,7 @@ class Parser:
 
         for p in self.properties:
             p["Note"] = notes.get(p["Label"], None)
+        self.notes = notes
 
     def __getitem__(self, key):
         assert isinstance(key, int)
