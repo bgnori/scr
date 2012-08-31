@@ -74,7 +74,7 @@ tokyo = ephem.Observer()
 tokyo.lat = "60.0"
 tokyo.lon = "-139.0"
 tokyo.elevation = 40
-tokyo.date = ephem.now()
+tokyo.date = ephem.J2000
 
 # 11767 is Polaris.
 Polaris = catalogue[11767]
@@ -88,4 +88,5 @@ print "ra=%s, dec=%s"%(Polaris.ra, Polaris.dec)
 print "a_ra=%s, a_dec=%s"%(Polaris.a_ra, Polaris.a_dec)
 print "a_ra=%f, a_dec=%f"%(Polaris.a_ra, Polaris.a_dec)
 print "az=%s, alt=%s"%(Polaris.az, Polaris.alt)
+
 
